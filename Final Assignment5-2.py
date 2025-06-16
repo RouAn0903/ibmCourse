@@ -34,7 +34,7 @@ year_list = [i for i in range(1980, 2024, 1)]
 # Create the layout of the app
 app.layout = html.Div([
     #TASK 2.1 Add title to the dashboard
-    html.H1(children='Automobile Sales Statistics Dashboard', style={'textAlign': 'center', 'color': '#503D36', 'font-size': 24}),
+    html.H1(children='Automobile Sales Statistics Dashboard', style={'textAlign': 'center', 'color': '#503D36', 'font-size': '24px'}),
     #TASK 2.2: Add two dropdown menus
     html.Div([
         html.Label("Select Statistics:"),
@@ -146,20 +146,24 @@ def update_output_container(selected_statistics, selected_year):
 #plot 1 Yearly Automobile sales using line chart for the whole period.
         # grouping data for plotting.
         # Hint:Use the columns Year and Automobile_Sales.
-        yas= data.groupby('Year')['Automobile_Sales'].mean().reset_index()
+        yas = yearly_data.groupby('Month')['Automobile_Sales'].mean().reset_index()
         Y_chart1 = dcc.Graph(figure=px.line(yas,
-            x='Year',
+            x='Month',
             y='Automobile_Sales',
-            title='Average Automobile Sales Over the Years'))
+           title='Average Monthly Automobile Sales in Year {}'.format(selected_year)
+        )
+    )
             
 # Plot 2 Total Monthly Automobile sales using line chart.
         # grouping data for plotting.
 	# Hint:Use the columns Month and Automobile_Sales.
-        mas = data.groupby('Month')['Automobile_Sales'].sum().reset_index()
-        Y_chart2 = dcc.Graph(figure=px.line(mas,
+        mas = yearly_data.groupby('Month')['Automobile_Sales'].sum().reset_index()
+        Y_chart2 = dcc.Graph(figure=px.bar(mas,
             x='Month',
             y='Automobile_Sales',
-            title='Total Monthly Automobile Sales'))
+            title='Total Monthly Automobile Sales in Year {}'.format(selected_year)
+        )
+    )
 
   # Plot bar chart for average number of vehicles sold during the given year
          # grouping data for plotting.
@@ -193,4 +197,3 @@ def update_output_container(selected_statistics, selected_year):
 # Run the Dash app
 if __name__ == '__main__':
     app.run(debug=True)
-
